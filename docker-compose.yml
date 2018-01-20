@@ -12,6 +12,8 @@ services:
       - db
     volumes:
       - .:/app
+    environment:
+      DB_HOSTNAME: db
   db:
     image: postgres
     environment:

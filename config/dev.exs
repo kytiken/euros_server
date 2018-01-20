@@ -53,5 +53,5 @@ config :euros_server, EurosServer.Repo,
   username: "postgres",
   password: "postgres",
   database: "euros_server_dev",
-  hostname: "db",
+  hostname: System.get_env("DB_HOSTNAME"),
   pool_size: 10
