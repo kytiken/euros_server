@@ -1,4 +1,4 @@
-FROM elixir
+FROM elixir:1.6
 ENV APP_ROOT /app
 WORKDIR $APP_ROOT
 COPY . $APP_ROOT
