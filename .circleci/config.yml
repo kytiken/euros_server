@@ -11,6 +11,9 @@ jobs:
         environment:
           POSTGRES_USER: postgres
       
+    environment:
+      - DB_HOSTNAME: "localhost"
+
     working_directory: ~/repo
     steps:
       - checkout
