@@ -14,14 +14,8 @@ defmodule EurosServerWeb.Router do
   end
 
   scope "/", EurosServerWeb do
-    # Use the default browser stack
-    pipe_through(:browser)
+    pipe_through :api
 
-    get("/", PageController, :index)
+    resources "/crawls", CrawlController, except: [:new, :edit]
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", EurosServerWeb do
-  #   pipe_through :api
-  # end
 end
