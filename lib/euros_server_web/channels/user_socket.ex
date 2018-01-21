@@ -2,7 +2,7 @@ defmodule EurosServerWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", EurosServerWeb.RoomChannel
+  channel "desk:*", EurosServerWeb.DeskChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
