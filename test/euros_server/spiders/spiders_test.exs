@@ -72,4 +72,66 @@ defmodule EurosServer.SpidersTest do
       assert %Ecto.Changeset{} = Spiders.change_crawl(crawl)
     end
   end
+
+  describe "documents" do
+    alias EurosServer.Spiders.Document
+
+    @valid_attrs %{body: "some body", url: "some url"}
+    @update_attrs %{body: "some updated body", url: "some updated url"}
+    @invalid_attrs %{body: nil, url: nil}
+
+    def document_fixture(attrs \\ %{}) do
+      {:ok, document} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Spiders.create_document()
+
+      document
+    end
+
+    test "list_documents/0 returns all documents" do
+      document = document_fixture()
+      assert Spiders.list_documents() == [document]
+    end
+
+    test "get_document!/1 returns the document with given id" do
+      document = document_fixture()
+      assert Spiders.get_document!(document.id) == document
+    end
+
+    test "create_document/1 with valid data creates a document" do
+      assert {:ok, %Document{} = document} = Spiders.create_document(@valid_attrs)
+      assert document.body == "some body"
+      assert document.url == "some url"
+    end
+
+    test "create_document/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Spiders.create_document(@invalid_attrs)
+    end
+
+    test "update_document/2 with valid data updates the document" do
+      document = document_fixture()
+      assert {:ok, document} = Spiders.update_document(document, @update_attrs)
+      assert %Document{} = document
+      assert document.body == "some updated body"
+      assert document.url == "some updated url"
+    end
+
+    test "update_document/2 with invalid data returns error changeset" do
+      document = document_fixture()
+      assert {:error, %Ecto.Changeset{}} = Spiders.update_document(document, @invalid_attrs)
+      assert document == Spiders.get_document!(document.id)
+    end
+
+    test "delete_document/1 deletes the document" do
+      document = document_fixture()
+      assert {:ok, %Document{}} = Spiders.delete_document(document)
+      assert_raise Ecto.NoResultsError, fn -> Spiders.get_document!(document.id) end
+    end
+
+    test "change_document/1 returns a document changeset" do
+      document = document_fixture()
+      assert %Ecto.Changeset{} = Spiders.change_document(document)
+    end
+  end
 end

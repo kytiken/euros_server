@@ -17,5 +17,6 @@ defmodule EurosServerWeb.Router do
     pipe_through :api
 
     resources "/crawls", CrawlController, except: [:new, :edit]
+    resources "/documents", DocumentController, except: [:new, :edit]
   end
 end
