@@ -55,3 +55,8 @@ config :euros_server, EurosServer.Repo,
   database: "euros_server_dev",
   hostname: System.get_env("DB_HOSTNAME"),
   pool_size: 10
+
+config :cors_plug,
+  origin: ["*"],
+  max_age: 86400,
+  methods: ["GET", "POST"]

@@ -46,6 +46,7 @@ defmodule EurosServerWeb.Endpoint do
     signing_salt: "cesZW+Cz"
   )
 
+  plug(CORSPlug)
   plug(EurosServerWeb.Router)
 
   @doc """
