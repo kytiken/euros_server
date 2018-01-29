@@ -17,6 +17,7 @@ defmodule EurosServerWeb.CrawlController do
       |> put_status(:created)
       |> put_resp_header("location", crawl_path(conn, :show, crawl))
       |> render("show.json", crawl: crawl)
+      spawn(fn -> EurosServer.Spiders.Crawl.execute(crawl) end)
     end
   end
 

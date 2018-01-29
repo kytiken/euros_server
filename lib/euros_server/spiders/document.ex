@@ -15,7 +15,7 @@ defmodule EurosServer.Spiders.Document do
   @doc false
   def changeset(%Document{} = document, attrs) do
     document
-    |> cast(attrs, [:url, :body])
-    |> validate_required([:url, :body])
+    |> cast(attrs, [:url, :body, :crawl_id])
+    |> validate_required([:url, :body, :crawl_id])
   end
 end

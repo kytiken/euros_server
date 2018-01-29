@@ -76,14 +76,15 @@ defmodule EurosServer.SpidersTest do
   describe "documents" do
     alias EurosServer.Spiders.Document
 
-    @valid_attrs %{body: "some body", url: "some url"}
-    @update_attrs %{body: "some updated body", url: "some updated url"}
-    @invalid_attrs %{body: nil, url: nil}
+    @valid_attrs %{body: "some body", url: "some url", crawl_id: nil}
+    @update_attrs %{body: "some updated body", url: "some updated url", crawl_id: nil}
+    @invalid_attrs %{body: nil, url: nil, crawl_id: nil}
 
     def document_fixture(attrs \\ %{}) do
+      crawl = crawl_fixture()
       {:ok, document} =
         attrs
-        |> Enum.into(@valid_attrs)
+        |> Enum.into(%{@valid_attrs | crawl_id: crawl.id})
         |> Spiders.create_document()
 
       document
@@ -100,7 +101,8 @@ defmodule EurosServer.SpidersTest do
     end
 
     test "create_document/1 with valid data creates a document" do
-      assert {:ok, %Document{} = document} = Spiders.create_document(@valid_attrs)
+      crawl = crawl_fixture()
+      assert {:ok, %Document{} = document} = Spiders.create_document(%{@valid_attrs | crawl_id: crawl.id})
       assert document.body == "some body"
       assert document.url == "some url"
     end
@@ -111,7 +113,8 @@ defmodule EurosServer.SpidersTest do
 
     test "update_document/2 with valid data updates the document" do
       document = document_fixture()
-      assert {:ok, document} = Spiders.update_document(document, @update_attrs)
+      crawl = crawl_fixture()
+      assert {:ok, document} = Spiders.update_document(document, %{@update_attrs | crawl_id: crawl.id})
       assert %Document{} = document
       assert document.body == "some updated body"
       assert document.url == "some updated url"

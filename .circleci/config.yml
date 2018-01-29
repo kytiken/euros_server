@@ -22,4 +22,7 @@ jobs:
       - run: mix local.hex --force
       - run: mix local.rebar
       - run: mix deps.get
+      - run: mix deps.compile
+      - run: mix ecto.create
+      - run: mix ecto.migrate
       - run: mix test
