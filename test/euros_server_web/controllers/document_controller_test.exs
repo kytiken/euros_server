@@ -25,7 +25,7 @@ defmodule EurosServerWeb.DocumentControllerTest do
   describe "index" do
     test "lists all documents", %{conn: conn} do
       crawl = fixture(:crawl)
-      conn = get conn, crawl_document_path(conn, :index, crawl.id)
+      conn = get(conn, crawl_document_path(conn, :index, crawl.id))
       assert json_response(conn, 200)["data"] == []
     end
   end

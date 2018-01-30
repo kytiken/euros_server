@@ -4,12 +4,14 @@ defmodule EurosServerWeb.DocumentController do
   alias EurosServer.Spiders
   alias EurosServer.Spiders.Document
 
-  action_fallback EurosServerWeb.FallbackController
+  action_fallback(EurosServerWeb.FallbackController)
 
   def index(conn, %{"crawl_id" => crawl_id}) do
-    crawl = crawl_id
-            |> EurosServer.Spiders.get_crawl!
-            |> EurosServer.Repo.preload(:documents)
+    crawl =
+      crawl_id
+      |> EurosServer.Spiders.get_crawl!()
+      |> EurosServer.Repo.preload(:documents)
+
     documents = crawl.documents
     render(conn, "index.json", documents: documents)
   end

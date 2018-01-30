@@ -11,8 +11,6 @@ defmodule EurosServerWeb.DocumentView do
   end
 
   def render("document.json", %{document: document}) do
-    %{id: document.id,
-      url: document.url,
-      body: document.body}
+    %{id: document.id, url: document.url, body: document.body}
   end
 end

@@ -11,12 +11,14 @@ defmodule EurosServerWeb.CrawlView do
   end
 
   def render("crawl.json", %{crawl: crawl}) do
-    %{id: crawl.id,
+    %{
+      id: crawl.id,
       url: crawl.url,
       cookie: crawl.cookie,
       recv_timeout: crawl.recv_timeout,
       timeout: crawl.timeout,
       pattern: crawl.pattern,
-      depth_limit: crawl.depth_limit}
+      depth_limit: crawl.depth_limit
+    }
   end
 end
