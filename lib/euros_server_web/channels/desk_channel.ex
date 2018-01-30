@@ -16,21 +16,22 @@ defmodule EurosServerWeb.DeskChannel do
   end
 
   def handle_in("new_msg", %{"body" => body}, socket) do
-    broadcast! socket, "new_msg", %{body: body}
+    broadcast!(socket, "new_msg", %{body: body})
     {:noreply, socket}
   end
 
   def handle_in("crawl", %{"url" => url}, socket) do
-    Euros.Core.crawl(url, fn(page) ->
-      broadcast! socket, "crawl", %{url: page.request_url}
+    Euros.Core.crawl(url, fn page ->
+      broadcast!(socket, "crawl", %{url: page.request_url})
     end)
+
     {:noreply, socket}
   end
 
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (desk:lobby).
   def handle_in("shout", payload, socket) do
-    broadcast socket, "shout", payload
+    broadcast(socket, "shout", payload)
     {:noreply, socket}
   end
 

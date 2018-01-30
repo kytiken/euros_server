@@ -3,11 +3,10 @@ defmodule EurosServer.Spiders.Document do
   import Ecto.Changeset
   alias EurosServer.Spiders.Document
 
-
   schema "documents" do
-    field :body, :string
-    field :url, :string
-    field :crawl_id, :id
+    field(:body, :string)
+    field(:url, :string)
+    field(:crawl_id, :id)
 
     timestamps()
   end

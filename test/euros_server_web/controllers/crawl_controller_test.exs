@@ -4,9 +4,30 @@ defmodule EurosServerWeb.CrawlControllerTest do
   alias EurosServer.Spiders
   alias EurosServer.Spiders.Crawl
 
-  @create_attrs %{cookie: nil, depth_limit: 0, pattern: ".*", recv_timeout: 60000, timeout: 60000, url: "http://euros-test.blogspot.jp/"}
-  @update_attrs %{cookie: "some updated cookie", depth_limit: 43, pattern: "some updated pattern", recv_timeout: 43, timeout: 43, url: "http://euros-test.blogspot.jp/"}
-  @invalid_attrs %{cookie: nil, depth_limit: nil, pattern: nil, recv_timeout: nil, timeout: nil, url: nil}
+  @create_attrs %{
+    cookie: nil,
+    depth_limit: 0,
+    pattern: ".*",
+    recv_timeout: 60000,
+    timeout: 60000,
+    url: "http://euros-test.blogspot.jp/"
+  }
+  @update_attrs %{
+    cookie: "some updated cookie",
+    depth_limit: 43,
+    pattern: "some updated pattern",
+    recv_timeout: 43,
+    timeout: 43,
+    url: "http://euros-test.blogspot.jp/"
+  }
+  @invalid_attrs %{
+    cookie: nil,
+    depth_limit: nil,
+    pattern: nil,
+    recv_timeout: nil,
+    timeout: nil,
+    url: nil
+  }
 
   def fixture(:crawl) do
     {:ok, crawl} = Spiders.create_crawl(@create_attrs)
@@ -19,7 +40,7 @@ defmodule EurosServerWeb.CrawlControllerTest do
 
   describe "index" do
     test "lists all crawls", %{conn: conn} do
-      conn = get conn, crawl_path(conn, :index)
+      conn = get(conn, crawl_path(conn, :index))
       assert json_response(conn, 200)["data"] == []
     end
   end
@@ -27,23 +48,25 @@ defmodule EurosServerWeb.CrawlControllerTest do
   describe "create crawl" do
     @tag :skip
     test "renders crawl when data is valid", %{conn: conn} do
-      conn = post conn, crawl_path(conn, :create), crawl: @create_attrs
+      conn = post(conn, crawl_path(conn, :create), crawl: @create_attrs)
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
-      conn = get conn, crawl_path(conn, :show, id)
+      conn = get(conn, crawl_path(conn, :show, id))
+
       assert json_response(conn, 200)["data"] == %{
-        "id" => id,
-        "cookie" => nil,
-        "depth_limit" => 0,
-        "pattern" => ".*",
-        "recv_timeout" => 60000,
-        "timeout" => 60000,
-        "url" => "http://euros-test.blogspot.jp/"}
+               "id" => id,
+               "cookie" => nil,
+               "depth_limit" => 0,
+               "pattern" => ".*",
+               "recv_timeout" => 60000,
+               "timeout" => 60000,
+               "url" => "http://euros-test.blogspot.jp/"
+             }
     end
 
     @tag :skip
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post conn, crawl_path(conn, :create), crawl: @invalid_attrs
+      conn = post(conn, crawl_path(conn, :create), crawl: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
@@ -52,22 +75,24 @@ defmodule EurosServerWeb.CrawlControllerTest do
     setup [:create_crawl]
 
     test "renders crawl when data is valid", %{conn: conn, crawl: %Crawl{id: id} = crawl} do
-      conn = put conn, crawl_path(conn, :update, crawl), crawl: @update_attrs
+      conn = put(conn, crawl_path(conn, :update, crawl), crawl: @update_attrs)
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
-      conn = get conn, crawl_path(conn, :show, id)
+      conn = get(conn, crawl_path(conn, :show, id))
+
       assert json_response(conn, 200)["data"] == %{
-        "id" => id,
-        "cookie" => "some updated cookie",
-        "depth_limit" => 43,
-        "pattern" => "some updated pattern",
-        "recv_timeout" => 43,
-        "timeout" => 43,
-        "url" => "http://euros-test.blogspot.jp/"}
+               "id" => id,
+               "cookie" => "some updated cookie",
+               "depth_limit" => 43,
+               "pattern" => "some updated pattern",
+               "recv_timeout" => 43,
+               "timeout" => 43,
+               "url" => "http://euros-test.blogspot.jp/"
+             }
     end
 
     test "renders errors when data is invalid", %{conn: conn, crawl: crawl} do
-      conn = put conn, crawl_path(conn, :update, crawl), crawl: @invalid_attrs
+      conn = put(conn, crawl_path(conn, :update, crawl), crawl: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
@@ -76,11 +101,12 @@ defmodule EurosServerWeb.CrawlControllerTest do
     setup [:create_crawl]
 
     test "deletes chosen crawl", %{conn: conn, crawl: crawl} do
-      conn = delete conn, crawl_path(conn, :delete, crawl)
+      conn = delete(conn, crawl_path(conn, :delete, crawl))
       assert response(conn, 204)
-      assert_error_sent 404, fn ->
-        get conn, crawl_path(conn, :show, crawl)
-      end
+
+      assert_error_sent(404, fn ->
+        get(conn, crawl_path(conn, :show, crawl))
+      end)
     end
   end
 

@@ -4,7 +4,7 @@ defmodule EurosServerWeb.CrawlController do
   alias EurosServer.Spiders
   alias EurosServer.Spiders.Crawl
 
-  action_fallback EurosServerWeb.FallbackController
+  action_fallback(EurosServerWeb.FallbackController)
 
   def index(conn, _params) do
     crawls = Spiders.list_crawls()
@@ -17,6 +17,7 @@ defmodule EurosServerWeb.CrawlController do
       |> put_status(:created)
       |> put_resp_header("location", crawl_path(conn, :show, crawl))
       |> render("show.json", crawl: crawl)
+
       spawn(fn -> EurosServer.Spiders.Crawl.execute(crawl) end)
     end
   end
@@ -36,6 +37,7 @@ defmodule EurosServerWeb.CrawlController do
 
   def delete(conn, %{"id" => id}) do
     crawl = Spiders.get_crawl!(id)
+
     with {:ok, %Crawl{}} <- Spiders.delete_crawl(crawl) do
       send_resp(conn, :no_content, "")
     end

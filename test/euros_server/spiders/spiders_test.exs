@@ -6,9 +6,30 @@ defmodule EurosServer.SpidersTest do
   describe "crawls" do
     alias EurosServer.Spiders.Crawl
 
-    @valid_attrs %{cookie: "some cookie", depth_limit: 42, pattern: "some pattern", recv_timeout: 42, timeout: 42, url: "some url"}
-    @update_attrs %{cookie: "some updated cookie", depth_limit: 43, pattern: "some updated pattern", recv_timeout: 43, timeout: 43, url: "some updated url"}
-    @invalid_attrs %{cookie: nil, depth_limit: nil, pattern: nil, recv_timeout: nil, timeout: nil, url: nil}
+    @valid_attrs %{
+      cookie: "some cookie",
+      depth_limit: 42,
+      pattern: "some pattern",
+      recv_timeout: 42,
+      timeout: 42,
+      url: "some url"
+    }
+    @update_attrs %{
+      cookie: "some updated cookie",
+      depth_limit: 43,
+      pattern: "some updated pattern",
+      recv_timeout: 43,
+      timeout: 43,
+      url: "some updated url"
+    }
+    @invalid_attrs %{
+      cookie: nil,
+      depth_limit: nil,
+      pattern: nil,
+      recv_timeout: nil,
+      timeout: nil,
+      url: nil
+    }
 
     def crawl_fixture(attrs \\ %{}) do
       {:ok, crawl} =
@@ -82,6 +103,7 @@ defmodule EurosServer.SpidersTest do
 
     def document_fixture(attrs \\ %{}) do
       crawl = crawl_fixture()
+
       {:ok, document} =
         attrs
         |> Enum.into(%{@valid_attrs | crawl_id: crawl.id})
@@ -102,7 +124,10 @@ defmodule EurosServer.SpidersTest do
 
     test "create_document/1 with valid data creates a document" do
       crawl = crawl_fixture()
-      assert {:ok, %Document{} = document} = Spiders.create_document(%{@valid_attrs | crawl_id: crawl.id})
+
+      assert {:ok, %Document{} = document} =
+               Spiders.create_document(%{@valid_attrs | crawl_id: crawl.id})
+
       assert document.body == "some body"
       assert document.url == "some url"
     end
@@ -114,7 +139,10 @@ defmodule EurosServer.SpidersTest do
     test "update_document/2 with valid data updates the document" do
       document = document_fixture()
       crawl = crawl_fixture()
-      assert {:ok, document} = Spiders.update_document(document, %{@update_attrs | crawl_id: crawl.id})
+
+      assert {:ok, document} =
+               Spiders.update_document(document, %{@update_attrs | crawl_id: crawl.id})
+
       assert %Document{} = document
       assert document.body == "some updated body"
       assert document.url == "some updated url"
