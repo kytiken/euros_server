@@ -28,6 +28,20 @@ defmodule EurosServerWeb.DeskChannel do
     {:noreply, socket}
   end
 
+  def handle_in("select", %{"crawl_id" => crawl_id, "query" => query}, socket) do
+    crawl = crawl_id
+            |> EurosServer.Spiders.get_crawl!()
+            |> EurosServer.Repo.preload(:documents)
+    crawl.documents
+    |> Enum.each(fn(document) ->
+      broadcast!(socket, "select", %{id: document.id, url: document.url, body: Floki.find(document.body, query) |> Floki.text})
+    end)
+
+    {:noreply, socket}
+  end
+
+
+
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (desk:lobby).
   def handle_in("shout", payload, socket) do
