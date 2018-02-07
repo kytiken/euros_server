@@ -11,7 +11,7 @@ services:
     depends_on:
       - db
     volumes:
-      - .:/app
+      - .:/app:cached
     environment:
       DB_HOSTNAME: db
   db:
